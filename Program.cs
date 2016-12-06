@@ -71,7 +71,7 @@ namespace StormpathConsoleApp
                             Console.Write("Age       : ");
                             age = Console.ReadLine();
 
-                            CreateAccount(firstName, lastName, email, password, age);
+                            await CreateAccount(firstName, lastName, email, password, age);
                             break;
 
                         /////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ namespace StormpathConsoleApp
                             Console.Write("Password  : ");
                             password = Console.ReadLine();
 
-                            AuthAccount(email, password);
+                            await AuthAccount(email, password);
                             break;
 
                         /////////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ namespace StormpathConsoleApp
                             Console.Write("Email     : ");
                             email = Console.ReadLine();
 
-                            DeleteAccount(email);
+                            await DeleteAccount(email);
                             break;
 
                         /////////////////////////////////////////////////////////////////////
@@ -101,13 +101,13 @@ namespace StormpathConsoleApp
                             Console.Write("Email     : ");
                             email = Console.ReadLine();
 
-                            FindAccount(email);
+                            await FindAccount(email);
                             break;
 
                         /////////////////////////////////////////////////////////////////////
                         case 'S':
                         case 's':
-                            ShowAccounts();
+                            await ShowAccounts();
                             break;
                     }//switch
                 }//while
@@ -121,7 +121,7 @@ namespace StormpathConsoleApp
         }
 
 
-        static async void CreateAccount(string firstName, string lastName, string email, string password, string age)
+        static async Task CreateAccount(string firstName, string lastName, string email, string password, string age)
         {
             IAccount accnt = await g_app.CreateAccountAsync(firstName, lastName, email, password);
             accnt.CustomData["Age"] = age;
@@ -131,7 +131,7 @@ namespace StormpathConsoleApp
         }
 
 
-        static async void AuthAccount(string email, string password)
+        static async Task AuthAccount(string email, string password)
         {
             IAuthenticationResult authResult = await g_app.AuthenticateAccountAsync(email, password);
             IAccount              accnt      = await authResult.GetAccountAsync();
@@ -141,7 +141,7 @@ namespace StormpathConsoleApp
         }
 
 
-        static async void FindAccount(string email)
+        static async Task FindAccount(string email)
         {
             List<IAccount> accnts = await g_app.GetAccounts().Where(acct => acct.Email == email).ToListAsync();
 
@@ -156,7 +156,7 @@ namespace StormpathConsoleApp
         }
 
 
-        static async void ShowAccounts()
+        static async Task ShowAccounts()
         {
             List<IAccount> accnts = await g_app.GetAccounts().ToListAsync();
 
@@ -174,7 +174,7 @@ namespace StormpathConsoleApp
         }
 
 
-        static async void DeleteAccount(string email)
+        static async Task DeleteAccount(string email)
         {
             List<IAccount> accnts = await g_app.GetAccounts().Where(acct => acct.Email == email).ToListAsync();
 
